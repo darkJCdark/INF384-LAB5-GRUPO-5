@@ -151,4 +151,4 @@ Dato recibido a las 16:40: el proveedor de conciliación exige acceso hoy y cobr
 ## Declaración de uso de IA
 
 Herramientas usadas y para qué se usó cada una:
-Claude (asistente de IA): extracción de datos verificables del repositorio base (SHA de commits, resultados de un escaneo con Checkov, resultados de un escaneo de dependencias equivalente a Trivy); redacción de un borrador de este documento (postmortem, decisiones y acciones), que el equipo revisó, discutió y ajustó antes de la entrega. 
+- Claude (asistente de IA): lectura de solo lectura del repositorio (historial de commits, `infra/`, `src/`, `ci.yml`) para identificar el SHA y la fecha del commit que introdujo el cambio; consulta de documentación pública sobre Checkov, Trivy y la CVE-2024-29415; explicación de la guía del laboratorio y del cronograma; redacción de borradores de A1, A2 y A3; revisión de los logs de GitHub Actions que el equipo le compartió. Claude no ejecutó Checkov ni Trivy ni realizó cambios en el repositorio. Los conteos de Checkov y Trivy y los check ID provienen de las ejecuciones del equipo en GitHub Actions. El equipo revisó, discutió y ajustó el contenido antes de entregarlo.
