@@ -8,7 +8,7 @@ Número de equipo: 5
 |---|---|---|---|
 | 20211041 | Daniel Marcel Malca Lopez | Moderador | D4rkPatata |
 | 20171857 | Christian Sebastian Chira Mallqui | Escriba | Setziret |
-| 20202583 | Carlos Vazques Morales | Abogado del diablo | CaVassM |
+| 20202583 | Carlos Vásquez Morales | Abogado del diablo | CaVassM |
 | 20206234 | Jorge Josue Chamorro Cayetano | Guardián del tiempo | darkJCdark |
 | 20210477 | Kei Shimabukuro Kohatsu | Integrador | Ryoukyougan22 |
 
