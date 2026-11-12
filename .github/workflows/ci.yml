@@ -42,3 +42,34 @@ jobs:
           checkov -d infra --framework terraform \
             --soft-fail \
             --hard-fail-on CKV_AWS_53,CKV_AWS_54,CKV_AWS_55,CKV_AWS_56,CKV_AWS_70
+
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Informar: todos los hallazgos de package-lock.json aparecen en el log, sin cortar el job.
+      - name: Trivy (informar) - todas las severidades
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: package-lock.json
+          scanners: vuln
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          ignore-unfixed: false
+          format: table
+          exit-code: '0'
+
+      # Bloquear (Decision 1): HIGH y CRITICAL detienen el pipeline.
+      # Decision 2: ignore-unfixed en false, una CVE sin version corregida tambien bloquea.
+      - name: Trivy (bloquear) - HIGH y CRITICAL
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: package-lock.json
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: false
+          format: table
+          exit-code: '1'
+          skip-setup-trivy: true
