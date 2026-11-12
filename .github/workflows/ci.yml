@@ -1,3 +1,4 @@
+
 name: ci
 
 on:
@@ -20,6 +21,27 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+
+  iac:
+    name: iac
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov
+        run: |
+          checkov -d infra --framework terraform \
+            --soft-fail \
+            --hard-fail-on CKV_AWS_53,CKV_AWS_54,CKV_AWS_55,CKV_AWS_56,CKV_AWS_70
 
   sca:
     runs-on: ubuntu-latest
