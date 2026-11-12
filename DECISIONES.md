@@ -125,7 +125,8 @@ Qué no funcionó:
 
 Dato recibido a las 16:40: el proveedor de conciliación exige acceso hoy y cobra S/ 15 000 por cada día sin acceso. Gerencia pide el nombre de quien hizo el cambio para sancionarlo.
 
- - **Impacto:** se agrega la penalidad de S/ 15 000 por día sin acceso. Contando desde el corte del 09/11 a las 09:25, serían S/ 45 000 (3 días completos) o S/ 60 000 (4 días calendario) al 12/11; la forma de contar se confirma en el contrato. El incidente deja de ser solo de confidencialidad y pasa a tener un costo económico que crece cada día.
+- Qué cambia en el postmortem:
+  - **Impacto:** se agrega la penalidad de S/ 15 000 por día sin acceso. Contando desde el corte del 09/11 a las 09:25, serían S/ 45 000 (3 días completos) o S/ 60 000 (4 días calendario) al 12/11; la forma de contar se confirma en el contrato. El incidente deja de ser solo de confidencialidad y pasa a tener un costo económico que crece cada día.
   - **Causas:** la causa de presión de plazo sin camino alternativo gana peso. La penalidad contractual que empujó el atajo del viernes vuelve a actuar hoy con una cifra mayor. No se agrega ninguna causa atribuida a una persona.
   - **Línea de tiempo:** se agrega el hecho del 12/11 a las 16:40 y el intervalo de restauración sigue abierto hasta que el proveedor recupere el acceso por una vía segura.
   - **Acciones:** la corrección de `infra/s3.tf` pasa a ser una acción de hoy, con plazo antes de las 18:00 y revisión por pull request. Se agrega la acción de presentar a Gerencia un informe sin atribución personal y acordar con ella una regla de revisión de incidentes.
