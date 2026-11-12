@@ -1,5 +1,24 @@
 const net = require('net');
-const ip = require('ip');
+
+// Rangos internos que no se aceptan como destino de notificacion.
+// Reemplaza a la libreria `ip` (CVE-2024-29415, sin version corregida).
+const internas = new net.BlockList();
+internas.addSubnet('0.0.0.0', 8, 'ipv4');
+internas.addSubnet('10.0.0.0', 8, 'ipv4');
+internas.addSubnet('100.64.0.0', 10, 'ipv4');
+internas.addSubnet('127.0.0.0', 8, 'ipv4');
+internas.addSubnet('169.254.0.0', 16, 'ipv4');
+internas.addSubnet('172.16.0.0', 12, 'ipv4');
+internas.addSubnet('192.168.0.0', 16, 'ipv4');
+internas.addAddress('::', 'ipv6');
+internas.addAddress('::1', 'ipv6');
+internas.addSubnet('fc00::', 7, 'ipv6');
+internas.addSubnet('fe80::', 10, 'ipv6');
+
+function esDireccionInterna(host) {
+  const familia = net.isIPv6(host) ? 'ipv6' : 'ipv4';
+  return internas.check(host, familia);
+}
 
 const comercios = new Map();
 
@@ -17,7 +36,7 @@ function validarUrlNotificacion(valor) {
   if (host === 'localhost') {
     return { ok: false, error: 'destino interno' };
   }
-  if (net.isIP(host) && ip.isPrivate(host)) {
+  if (net.isIP(host) && esDireccionInterna(host)) {
     return { ok: false, error: 'destino interno' };
   }
   return { ok: true, url: url.toString() };
