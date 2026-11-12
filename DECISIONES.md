@@ -46,6 +46,7 @@ Existe riesgo de exposición de información financiera de los usuarios.
 | Lun 09/11 09:25 | El proveedor de conciliación pierde el acceso a los comprobantes. |
 | Lun 09/11 11:00 | El equipo busca los registros de acceso al bucket y descubre que no existen. |
 | Mar 10/11 10:00 | Gerencia pide un informe del incidente y un plan para que no se repita. |
+| Jue 12/11 16:40 | El proveedor exige acceso hoy y cobra S/ 15 000 por cada día sin acceso. Gerencia pide el nombre de quien hizo el cambio. |
 
 ### Causas
 
@@ -78,7 +79,7 @@ Qué no funcionó:
 
 | Acción | Rol responsable | Fecha límite |
 |---|---|---|
-| El equipo agrega a `ci.yml` el job `iac` con Checkov sobre `infra/`, que bloquea los hallazgos de exposición pública y de identidad definidos en la Decisión 1. | Desarrolladores backend | 12/11 |
+| El equipo agrega a `ci.yml` el job `iac` con Checkov sobre `infra/`, que bloquea los hallazgos de exposición pública del bucket definidos en la Decisión 1. | Desarrolladores backend | 12/11 |
 | El equipo agrega a `ci.yml` el job `sca` con Trivy sobre `package-lock.json`, aplicando las Decisiones 1 y 2. | Desarrolladores backend | 12/11 |
 | El equipo corrige `infra/s3.tf` hoy, antes de las 18:00, mediante pull request revisado: bloqueo de acceso público activado y lectura otorgada solo al rol `conciliacion-lectura` de la cuenta 111122223333, de modo que el proveedor recupere el acceso sin abrir el bucket y el código coincida con la consola. | Desarrolladores backend | 12/11 |
 | El equipo activa la protección de `main`: sin commits directos, pull request obligatorio y al menos una aprobación antes de fusionar. | Líder técnico | 13/11 |
@@ -103,7 +104,7 @@ Qué no funcionó:
 ### Decisión 1 · Qué bloquea y qué informa
 
 - Decisión: Se establece una política de seguridad diferenciada. Checkov bloqueará los hallazgos que permitan el acceso público al bucket de comprobantes S3, especialmente `CKV_AWS_53`, `CKV_AWS_54`, `CKV_AWS_55`, `CKV_AWS_56` y `CKV_AWS_70`. Los demás hallazgos se informarán, salvo aquellos que el equipo incorpore expresamente a la política bloqueante. Trivy bloqueará vulnerabilidades HIGH y CRITICAL con versión corregida disponible. Las vulnerabilidades sin parche se reportarán y recibirán el tratamiento establecido en la Decisión 2.
-- Dato del repositorio que la sustenta: Se ejecutó Checkov 3.4.5 sobre `infra/`, obteniéndose 20 checks aprobados, 28 fallidos y 0 omitidos. Entre los hallazgos bloqueantes detectados se encuentran `CKV_AWS_55`, por la desactivación de `ignore_public_acls`, y `CKV_AWS_70`, por una política S3 con `Principal = "*"`. El job `iac` terminó con exit code 1, demostrando que la política bloqueante funciona. Trivy sobre `package-lock.json` reportó [N] hallazgos en el repositorio base (tabla "Total: N" del log del run #13), entre ellos `ip` 2.0.1 con CVE-2024-29415 (sin versión corregida) y `lodash` con una vulnerabilidad HIGH con versión corregida. Tras el reemplazo de `ip`, el bloqueo siguió activo por `lodash` 4.17.21 (CVE-2026-4800, HIGH, corregida en 4.18.0), lo que demuestra que la política bloqueante funciona.
+- Dato del repositorio que la sustenta: Se ejecutó Checkov 3.4.5 sobre `infra/`, obteniéndose 20 checks aprobados, 28 fallidos y 0 omitidos. Entre los hallazgos bloqueantes detectados se encuentran `CKV_AWS_55`, por la desactivación de `ignore_public_acls`, y `CKV_AWS_70`, por una política S3 con `Principal = "*"`. El job `iac` terminó con exit code 1, demostrando que la política bloqueante funciona. Trivy sobre `package-lock.json` reportó [N] hallazgos en el repositorio base (tabla "Total: N" del log del run #13), entre ellos `ip` 2.0.1 con CVE-2024-29415 (sin versión corregida) y `lodash` con una vulnerabilidad HIGH con versión corregida. Tras el reemplazo de `ip`, el bloqueo siguió activo por `lodash` 4.17.21 (CVE-2026-4800, HIGH, corregida en 4.18.0), lo que demuestra que el gate de Trivy bloquea.
 - Alternativa descartada y por qué: Se descarta bloquear todos los hallazgos de Checkov, debido a que algunos corresponden a mejoras de seguridad no directamente relacionadas con el incidente y requieren evaluación adicional. También se descarta tratar todos los hallazgos como informativos, porque permitiría que una configuración pública de S3 pase el pipeline sin detenerse.
 - Posición en minoría: El abogado del diablo sostiene que bloquear solo el acceso público es insuficiente. Entre los 28 hallazgos informativos hay controles directamente ligados al incidente, como el registro de acceso del bucket (cuya ausencia impidió medir cuántos comprobantes se descargaron, causa 5 del postmortem). Al quedar como informativos, la misma situación podría repetirse sin que el pipeline la detenga. Propone ampliar la lista bloqueante a esos controles.
 
@@ -116,7 +117,7 @@ Qué no funcionó:
 
 ### Decisión 3 · La Function URL sin autenticación
 
-- Decisión: Abrir una excepción de duración limitada para la Function URL sin autenticación y no corregir en esta sesión. `CKV_AWS_258` se incorpora expresamente a la política bloqueante de la Decisión 1, por lo que la excepción se escribe en `infra/lambda.tf` con `#checkov:skip=CKV_AWS_258` y los cuatro datos: responsable (Líder técnico), vencimiento (12/12/2026), control compensatorio (autenticación de usuarios en el servicio externo al repositorio, a confirmar, más monitoreo de invocaciones) y riesgo aceptado (cualquier persona con la URL puede invocar los endpoints de la API sin autenticación de AWS).
+- Decisión: Abrir una excepción de duración limitada para la Function URL sin autenticación y no corregir en esta sesión. La excepción se escribe en `infra/lambda.tf` con `#checkov:skip=CKV_AWS_258` y los cuatro datos: responsable (Líder técnico), vencimiento (12/12/2026), control compensatorio (autenticación de usuarios en el servicio externo al repositorio, a confirmar, más monitoreo de invocaciones) y riesgo aceptado (cualquier persona con la URL puede invocar los endpoints de la API sin autenticación de AWS).
 - Dato del repositorio que la sustenta: `CKV_AWS_258` sobre el recurso `aws_lambda_function_url.api` (`infra/lambda.tf`, líneas 27-30; `authorization_type = "NONE"` en la línea 29).
 - Alternativa descartada y por qué: Corregir cambiando a `AWS_IAM`. Con `AWS_IAM` los llamadores deben ser principales IAM autenticados, y la app móvil consume la URL directamente sin credenciales de AWS, por lo que el cambio la dejaría sin servicio mientras se resuelve el incidente del proveedor. La app no está en este repositorio y no se puede modificar en la sesión.
 - Posición en minoría: Corregir hoy con `AWS_IAM` y coordinar la actualización de la app móvil, porque `src/handler.js` no valida identidad en `/saldo`, `/historial` ni `/transferir` y el control compensatorio externo no se puede verificar desde el repositorio. Se descarta por el riesgo de dejar la app sin servicio, y se mitiga con el vencimiento corto y la revisión de la excepción.
