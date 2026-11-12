@@ -144,8 +144,8 @@ Dato recibido a las 16:40: el proveedor de conciliación exige acceso hoy y cobr
 
 | Evidencia | Link |
 |---|---|
-| Run fallido: el gate detiene el bucket público | https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43319297535 |
-| Run en verde en `main` después de las correcciones | https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43324197376 |
+| Run fallido: el gate detiene el bucket público | [https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43319297535](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43319297535) |
+| Run en verde en `main` después de las correcciones | [https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43324197376](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43325335181) |
 | Pull requests del equipo | [#2](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/2), [#3](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/3), [#4](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/4), [#5](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/5), [#6](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/6), [#7](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/7) |
 
 ## Declaración de uso de IA
