@@ -144,10 +144,11 @@ Dato recibido a las 16:40: el proveedor de conciliación exige acceso hoy y cobr
 
 | Evidencia | Link |
 |---|---|
-| Run fallido: el gate detiene el bucket público | (https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43319297535) |
-| Run en verde en `main` después de las correcciones | (https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43324197376) |
+| Run fallido: el gate detiene el bucket público | https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43319297535 |
+| Run en verde en `main` después de las correcciones | https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/actions/runs/43324197376 |
 | Pull requests del equipo | [#2](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/2), [#3](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/3), [#4](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/4), [#5](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/5), [#6](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/6), [#7](https://github.com/darkJCdark/INF384-LAB5-GRUPO-5/pull/7) |
 
 ## Declaración de uso de IA
 
 Herramientas usadas y para qué se usó cada una:
+Claude (asistente de IA): extracción de datos verificables del repositorio base (SHA de commits, resultados de un escaneo con Checkov, resultados de un escaneo de dependencias equivalente a Trivy); redacción de un borrador de este documento (postmortem, decisiones y acciones), que el equipo revisó, discutió y ajustó antes de la entrega. 
